@@ -1,42 +1,29 @@
 const express = require("express");
+const { authMiddleware,userMiddleware } = require("./middlewares/auth");
 const app = express();
 
-// app.get(
-//   "/user",
-//   (req, res, next) => {
-//     console.log("1");
-//     res.send({ firstName: "Akshay", lastName: "Saini" });
-//     next();
-//   },
-//   (req, res) => {
-//     console.log("2");
-//     res.send("2nd Response");
+app.use("/admin", authMiddleware);
+
+app.get("/user",userMiddleware,(req,res)=>{
+    res.send("User")
+})
+
+app.get("/admin/getAllData", (req, res) => {
+  res.send("All data sent");
+});
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("delete user");
+});
+
+// app.get("/admin/getAllData", (req, res) => {
+//   const token = "xyz";
+//   const isAdminAuthorized = token === "xyz";
+//   if (isAdminAuthorized) {
+//     res.send("All data sent");
+//   } else {
+//     res.status(401).send("Unauthorized request");
 //   }
-// );
-//new
-app.get("/user", [
-  (req, res, next) => {
-    console.log("1");
-    next();
-    // res.send({ firstName: "Akshay", lastName: "Saini" });
-  },
-  (req, res, next) => {
-    console.log("2");
-    next();
-    // res.send("2nd Response");
-  },
-  (req, res, next) => {
-    console.log("3");
-    next();
-    // res.send("2nd Response");
-  },
-  (req, res, next) => {
-    console.log("4");
-    // next();
-    // res.send("2nd Response");
-  },
-]);
-//Cannot GET /user
+// });
 
 app.listen(7777, () => {
   console.log("Server is Successfully listening on port 7777");
