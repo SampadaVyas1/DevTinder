@@ -1,15 +1,18 @@
 const express=require("express");
 const app=express();
-// app.use("/",(req,res)=>{
-//     res.send("Hello from the dashnpard")
-// })
 
-app.use("/hello",(req,res)=>{
-    res.send("Hello  Hello Hello");
+//hahahahaha
+app.use("/user",(req,res)=>{
+    res.send("hahahahaha")
 })
-app.use("/hello/2",(req,res)=>{
-    res.send("AbQARkAdABRAS")
+//This will only handle GET call to /user
+app.get("/user",(req,res)=>{
+res.send({name:"smapada"})
 })
+app.post("/user",(req,res)=>{
+    res.send("Data saves SuccessFully")
+})
+//this will match all the HTTP method API calla to /test
 app.use("/test",(req,res)=>{
 res.send("Hello from the server");
 })
