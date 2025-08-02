@@ -1,25 +1,25 @@
-const express=require("express");
-const app=express();
+const express = require("express");
+const app = express();
 
-//hahahahaha
-app.use("/user",(req,res)=>{
-    res.send("hahahahaha")
-})
-//This will only handle GET call to /user
-app.get("/user",(req,res)=>{
-res.send({name:"smapada"})
-})
-app.post("/user",(req,res)=>{
-    res.send("Data saves SuccessFully")
-})
-//this will match all the HTTP method API calla to /test
-app.use("/test",(req,res)=>{
-res.send("Hello from the server");
-})
+// http://localhost:7777/user?userId=101
+// http://localhost:7777/user?userId=101&passoword=33
+app.get("/user", (req, res) => {
+  console.log(req.query);
+  res.send({ firstName: "Akshay", lastName: "Saini" });
+});
 
-app.use("/",(req,res)=>{
-    res.send("Hello from the dashnpard")
-})
-app.listen(7777,()=>{
-    console.log("Server is Suvvessfully listeming at 7777")
-}) 
+// http://localhost:7777/user/707
+app.get("/user/:userId", (req, res) => {
+  console.log(req.params);
+  res.send({ firstName: "Akshay", lastName: "Saini" });
+});
+
+
+app.get("/user/:userId/:name", (req, res) => {
+  console.log(req.params);
+  res.send({ firstName: "Akshay",  });
+});
+
+app.listen(7777, () => {
+  console.log("Server is Successfully listening on port 7777");
+});
