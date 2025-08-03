@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon src/index.js",
-    "dev":"nodemon src/index.js"
-
+    "start": "nodemon src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "author": "sampadavyas",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0"
   }
 }
