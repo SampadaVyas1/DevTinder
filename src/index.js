@@ -5,16 +5,28 @@ const app = express();
 
 app.use(express.json());
 
-app.patch("/user", async (req, res) => {
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req?.params?.userId;
   const data = req.body;
+  const ALLOWED_DATA = ["photoUrl","about", "gender", "age", "skills"];
+  const isUpdateAllowed = Object.keys(data).every((key) =>
+    ALLOWED_DATA.includes(key)
+  );
+  if (data?.skills?.length > 10) {
+    throw new Error("Skills Length exceeded");
+  }
   try {
-    user = await User.findByIdAndUpdate(data.userId, data, {
-      returnDocument: "after",
-      runValidators:true,
-    });
-    res.send(user);
+    if (isUpdateAllowed) {
+      user = await User.findByIdAndUpdate(userId, data, {
+        returnDocument: "after",
+        runValidators: true,
+      });
+      res.send(user);
+    } else {
+      res.send("Fields are not allowed to update");
+    }
   } catch (e) {
-    res.status(400).send(e?.message,"Something went Wrong");
+    res.status(400).send(e?.message, "Something went Wrong");
   }
 });
 
@@ -66,10 +78,10 @@ app.post("/signup", async (req, res) => {
   //   password: "akshat@123",
   // };
 
-  const existingUser =await User.findOne({ emailId: req.body.emailId });
-  console.log(existingUser,"existingUser")
+  const existingUser = await User.findOne({ emailId: req.body.emailId });
+  console.log(existingUser, "existingUser");
   if (existingUser) {
-   return res.send("User with duplicate email found");
+    return res.send("User with duplicate email found");
   }
 
   console.log(userData, "userData");
@@ -78,7 +90,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("User Saved Successfully");
   } catch (err) {
-    res.status(500).send(err?.message,"Error Saving the user");
+    res.status(500).send(err?.message, "Error Saving the user");
   }
 });
 
