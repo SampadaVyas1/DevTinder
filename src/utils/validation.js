@@ -11,9 +11,31 @@ const validateSignUpData = (req, res) => {
   }
 };
 
-const validateEmailData=(emailId)=>{
-   if (!validator.isEmail(emailId)) {
+const validateEmailData = (emailId) => {
+  if (!validator.isEmail(emailId)) {
     throw new Error("Email is not valid");
   }
-}
-module.exports={validateSignUpData,validateEmailData}
+};
+
+const validateEditProfileData = function (req) {
+  const data = req.body;
+  const allowedFields = [
+    "firstName",
+    "lastName",
+    "photoUrl",
+    "about",
+    "skills",
+    "gender",
+    "age",
+  ];
+  const validEditableField = Object.keys(data).every((ele) =>
+    allowedFields.includes(ele)
+  );
+  if (!validEditableField) {
+    throw new Error("Field is not editable");
+  }
+  else{
+    return true
+  }
+};
+module.exports = { validateSignUpData, validateEmailData,validateEditProfileData };

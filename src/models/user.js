@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -37,13 +41,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       minLength: [6, "Password must be at least 6 characters"],
       maxLength: [128, "Password can't exceed 128 characters"],
-      validate(value)
-      {
-        if(!validator.isStrongPassword(value))
-        {
-          throw new Error("Enter a Strong Password"+value)
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Enter a Strong Password" + value);
         }
-      }
+      },
     },
     age: {
       type: Number,
@@ -78,5 +80,21 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+userSchema.methods.getJWT = async function () {
+  const user = this;
+  const token = await jwt.sign({ _id: user._id }, "DEV@Tinder$790", {
+    expiresIn: "1d",
+  });
+  return token;
+};
+userSchema.methods.validatePassword = async function (password) {
+  const user = this;
+
+  const isPasswordValid = await bcrypt.compare(password, user?.password);
+  return isPasswordValid;
+};
+
+
+
 const userModel = mongoose.model("User", userSchema);
 module.exports = userModel;
