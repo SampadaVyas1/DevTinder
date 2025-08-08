@@ -18,3 +18,5 @@ POST /request/review/rejected/:requestId
 GET /user/connections
 GET /user/requests/received
 GET /user/feed -Gets you the profiles of other users on platform
+
+Status: ignore,accepted,interested,rejected
